@@ -46,4 +46,8 @@ public class Presenter {
     public void getPrizeToys(){
         prizeToys.getAllPrizeToys();
     }
+
+    public void setName (String storeName){
+        toyStore.setName(storeName);
+    }
 }
