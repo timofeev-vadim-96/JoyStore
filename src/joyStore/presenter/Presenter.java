@@ -57,4 +57,19 @@ public class Presenter {
     public void log (String text) throws IOException {
         logger.log(text);
     }
+
+    public void setDropChance(String name, double dropChance){
+        for (Toy toy: toyStore.getToys()) {
+            if (toy.getName().equals(name)){
+                toy.setDropChance(dropChance);
+            }
+        }
+    }
+
+    public boolean searchToy(String name){
+        for (Toy toy: toyStore.getToys()) {
+            if (toy.getName().equals(name)) return true;
+        }
+        return false;
+    }
 }

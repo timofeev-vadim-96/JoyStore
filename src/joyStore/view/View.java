@@ -22,7 +22,7 @@ public class View {
         Command com;
         instruction();
         while (true) {
-            String command = prompt("Enter the command: (INFO/ADD/TRY/PRIZE/HELP/EXIT)\n");
+            String command = prompt("Enter the command: (INFO/ADD/TRY/PRIZE/HELP/SET/CHANCE/EXIT)\n");
             presenter.log(command);
             commandValidation(command);
             com = Command.valueOf(command);
@@ -46,11 +46,10 @@ public class View {
                     instruction();
                     break;
                 case SET:
-                    String storeName = prompt("Enter the store name: \n");
-                    presenter.setName(storeName);
-                    System.out.printf(
-                            "The new store name \"%s\" will be displayed when the instruction is called\n",
-                            storeName);
+                    setStoreName();
+                    break;
+                case CHANCE:
+                    setDropChance();
                     break;
             }
         }
@@ -92,13 +91,42 @@ public class View {
                         "PRIZE - get all the won toys\n" +
                         "HELP - show the instruction\n" +
                         "SET - set the store name\n" +
+                        "CHANCE - set a drop chance\n" +
                         "EXIT - exit the app\n", presenter.getStoreName());
     }
 
     public Toy createNewToy() {
         String name = prompt("Enter the name: \n");
         int quantity = Math.abs(Integer.parseInt(prompt("Enter the quantity: \n")));
-        double dropChance = Math.abs(Double.parseDouble(prompt("Enter the drop chance: \n")));
+        double dropChance = getDropChance();
         return new Toy(name, quantity, dropChance);
+    }
+
+    public double getDropChance(){
+        double dropChance = Math.abs(Double.parseDouble(prompt("Enter the drop chance: \n")));
+        if (dropChance > 99.99){
+            while (dropChance > 99.99){
+                dropChance = Math.abs(Double.parseDouble(prompt("Enter the drop chance (0.00 - 99.99): \n")));
+            }
+        }
+        return dropChance;
+    }
+
+    public void setDropChance(){
+        String toyName = prompt("Enter the name of the toy: \n");
+        if (presenter.searchToy(toyName)){
+            double dropChance = getDropChance();
+            presenter.setDropChance(toyName, dropChance);
+            System.out.println("The drop chance was changed successfully\n");
+        }
+        else System.out.println("There is no such toy in the store\n");
+    }
+
+    public void setStoreName(){
+        String storeName = prompt("Enter the store name: \n");
+        presenter.setName(storeName);
+        System.out.printf(
+                "The new store name \"%s\" will be displayed when the instruction is called\n",
+                storeName);
     }
 }
