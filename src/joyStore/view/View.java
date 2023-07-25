@@ -1,9 +1,12 @@
 package joyStore.view;
 
+import joyStore.dao.impl.DataBase;
+import joyStore.logger.impl.ViewLogger;
 import joyStore.models.Toy;
 import joyStore.presenter.Presenter;
 import joyStore.util.Command;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class View {
@@ -11,15 +14,16 @@ public class View {
     Scanner in;
 
     public View() {
-        this.presenter = new Presenter();
+        this.presenter = new Presenter(new ViewLogger(new DataBase()));
         this.in = new Scanner(System.in);
     }
 
-    public void run() {
+    public void run() throws IOException {
         Command com;
         instruction();
         while (true) {
             String command = prompt("Enter the command: (INFO/ADD/TRY/PRIZE/HELP/EXIT)\n");
+            presenter.log(command);
             commandValidation(command);
             com = Command.valueOf(command);
             if (com == Command.EXIT) return;

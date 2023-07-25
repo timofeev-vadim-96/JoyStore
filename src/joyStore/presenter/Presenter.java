@@ -1,19 +1,23 @@
 package joyStore.presenter;
 
+import joyStore.logger.Loggerable;
 import joyStore.models.PrizeToys;
 import joyStore.models.Toy;
 import joyStore.models.ToyStore;
 import joyStore.util.Probability;
 
+import java.io.IOException;
 import java.util.Set;
 
 public class Presenter {
     private ToyStore toyStore;
     private PrizeToys prizeToys;
+    private Loggerable logger;
 
-    public Presenter() {
+    public Presenter(Loggerable logger) {
         this.toyStore = new ToyStore("Default name");
         this.prizeToys = new PrizeToys();
+        this.logger = logger;
     }
 
     public String tryToWinToy(){
@@ -49,5 +53,8 @@ public class Presenter {
 
     public void setName (String storeName){
         toyStore.setName(storeName);
+    }
+    public void log (String text) throws IOException {
+        logger.log(text);
     }
 }
